@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,13 +18,30 @@ const stackNavigatorOption = {
   headerBackTitle: "返回",
   headerTitleStyle: {
     color: '#0071eb',
+    fontSize: 20,
   },
 };
+
+let triggerRegion = false;
 
 function HomeStack() {
   return (
     <Stack.Navigator screenOptions={stackNavigatorOption}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <Text
+              onPress={() => {
+                triggerRegion = !triggerRegion;
+                navigation.setParams({display: triggerRegion});
+              }}
+              style={styles.btnRegion}
+            >選擇地區</Text>
+          ),
+        })}
+      />
       <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
   );
@@ -80,5 +97,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  btnRegion: {
+    color: "#00bcd4",
+    fontSize: 16,
+    padding: 10,
   },
 });
